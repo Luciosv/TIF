@@ -1,0 +1,12 @@
+[workspace]
+restore_data_on_startup = True
+save_data_on_exit = True
+save_history = True
+save_non_project_files = False
+project_type = 'empty-project-type'
+recent_files = ['main.py', 'ui\\ui.py', 'ui\\widgets\\video_player\\video_player.py', 'tests\\test_manager.py', 'tests\\results_display.py', 'tests\\test_types\\test_base.py', 'tests\\test_types\\tug.py', '..\\TIF_TUG\\Interfaz\\Proyecto Final.py', '..\\TIF_TUG\\Interfaz\\Calculator.py']
+
+[main]
+version = 0.2.0
+recent_files = []
+
