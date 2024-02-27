@@ -10,6 +10,7 @@ from tkinter import ttk
 from tkinter import filedialog
 
 from widgets.video_player.video_player import VideoPlayer
+from tests.test_manager import TestManager
 
 """
 La clase MainScreen representa la pantalla principal de la interfaz de usuario 
@@ -24,6 +25,8 @@ class MainScreen:
         
         self.configuration_main_screen()
         self.create_widgets()
+        
+        self.test_manager = TestManager(master)
     
     def configuration_main_screen(self):
         self.master.title("TIF")
@@ -38,6 +41,12 @@ class MainScreen:
         self.load_button = ttk.Button(self.master,text="Cargar Video", 
                                       width=20, command=self.load_video)
         self.load_button.place(x=10, y=10)
+        
+        # Boton para procesar el video
+        self.process_button = ttk.Button(self.master,text="Procesar Video", 
+                                      width=20, command=self.process_video)
+        self.process_button.place(x=10, y=70)
+        #self.create_progressbar()
     
     
     def load_video(self):
@@ -46,12 +55,29 @@ class MainScreen:
         self.video_player.load_video(video_path)
     
     
+    def process_video(self):
+        # me fijo si hay un video que procesar
+        video = self.video_player.get_video()
+        video_path = self.video_player.get_video_path()
+        if video is not None and video_path is not None:
+            # creo la barra de progreso
+            progressbar = self.create_progressbar()
+            # envio el video a procesar y guardo el video procesado
+            result_video = self.test_manager.apply_test(video, video_path, progressbar)
+            # elimino el progressbar
+            #progressbar.destroy()
+    
     def create_video_player(self):
         self.video_frame = ttk.Frame(self.master, width=800, height=500)
         self.video_frame.pack_propagate(False)
         self.video_frame.pack()
         self.video_player = VideoPlayer(self.video_frame)
-        
+    
+    
+    def create_progressbar(self):
+        progressbar = ttk.Progressbar(self.master, length=800)
+        progressbar.pack()
+        return progressbar
     
     def run(self):
         self.master.mainloop()

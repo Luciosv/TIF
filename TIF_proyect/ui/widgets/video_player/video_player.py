@@ -36,6 +36,10 @@ class VideoPlayer:
         return self.video
     
     
+    def get_video_path(self):
+        return self.video_path
+    
+    
     def set_video(self, video):
         self.video = video
         

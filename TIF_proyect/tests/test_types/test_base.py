@@ -18,7 +18,7 @@ class TestBase(ABC):
     
     
     @abstractmethod
-    def apply_test(self, video, video_path):
+    def apply_test(self, video, video_path, progressbar):
         pass
 
 

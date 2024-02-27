@@ -6,9 +6,9 @@ Created on Sat Feb 24 13:41:17 2024
 """
 
 # -------- IMPORT DE LOS TEST --------
-from test_types.tug import TUG
+from .test_types.tug import TUG
 
-from results_display import ResultsDisplay
+from .results_display import ResultsDisplay
 
 
 class TestManager:
@@ -36,11 +36,11 @@ class TestManager:
         return self.current_test
     
     
-    def apply_test(self, video, video_path):
+    def apply_test(self, video, video_path, progressbar):
         video_test = None
         
         if self.current_test in self.tests:
-            video_test = self.tests[ self.current_test ].apply_test(video, video_path)
+            video_test = self.tests[ self.current_test ].apply_test(video, video_path, progressbar)
         
         return video_test
             
@@ -55,4 +55,7 @@ class TestManager:
 
 
 if __name__ == "__main__":
-    pass
+    test_manager = TestManager([])
+    
+    print(test_manager.get_current_test())
+    

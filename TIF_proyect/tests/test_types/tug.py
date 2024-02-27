@@ -5,7 +5,7 @@ Created on Sat Feb 24 13:45:16 2024
 @author: Usuario
 """
 
-from test_base import TestBase
+from .test_base import TestBase
 import mediapipe as mp
 import cv2
 import numpy as np
@@ -20,9 +20,14 @@ class TUG(TestBase):
         self.previous_skipped_frame = 0
         self.MAX_ACCUMULATE_ERROR = 10
     
-    def apply_test(self, video, video_path):
+    def apply_test(self, video, video_path, progressbar):
         # Implementación específica del test TUG
-        pass
+        
+        # proceso el video
+        video_result = self.process_video(video, video_path, progressbar)
+        
+        # retorno el video procesado
+        return video_result
     
     def get_types_results(self):
         # Implementación para determinar qué tipos de resultados se pueden obtener
@@ -40,8 +45,7 @@ class TUG(TestBase):
     PROCESA EL VIDEO CON MEDIAPIPE
     REPRESENTA EL WHILE QUE PROCESA CADA FRAME
     """
-    def process_video(self, video, video_path):
-        mp_drawing = mp.solutions.drawing_utils
+    def process_video(self, video, video_path, progressbar):
         mp_pose = mp.solutions.pose
         
         frame_count = 0
@@ -81,6 +85,14 @@ class TUG(TestBase):
                 # PASO AL SIGUIENTE FRAME
                 ret, frame = video.read()
                 frame_count += 1
+                
+                # ACTUALIZO LA BARRA DE PROGRESO
+                amount = frame_count / int(video.get(cv2.CAP_PROP_FRAME_COUNT))*100 - 0.1
+                progressbar.step(amount)
+                print(amount)
+        
+        # devuelvo el video procesado
+        return video_result
         
 
     def create_video(self, video, video_path):
