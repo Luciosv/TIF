@@ -137,13 +137,8 @@ class TUG(TestBase):
         output = cv2.addWeighted(frame, 1, aux_image, 0.8, 0)
         
         # AGREGO LOS CIRCULOS
-        cv2.circle(output, (landmarks_x[0], landmarks_y[0]), 6, (5,5,170), 4)
-        cv2.circle(output, (landmarks_x[1], landmarks_y[1]), 6, (5,5,170), 4)
-        cv2.circle(output, (landmarks_x[2], landmarks_y[2]), 6, (5,5,170), 4)
-
-        cv2.circle(output, (landmarks_x[3], landmarks_y[3]), 6, (5,5,170), 4)
-        cv2.circle(output, (landmarks_x[4], landmarks_y[4]), 6, (5,5,170), 4)
-        cv2.circle(output, (landmarks_x[5], landmarks_y[5]), 6, (5,5,170), 4)
+        for x,y in zip(landmarks_x, landmarks_y):
+            cv2.circle(output, (x, y), 6, (5,5,170), 4)
         
         return output
         
