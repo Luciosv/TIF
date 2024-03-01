@@ -8,6 +8,7 @@ Created on Fri Feb 23 10:34:44 2024
 import tkinter as tk
 from tkinter import ttk
 from tkinter import filedialog
+import threading
 
 from widgets.video_player.video_player import VideoPlayer
 from tests.test_manager import TestManager
@@ -62,10 +63,29 @@ class MainScreen:
         if video is not None and video_path is not None:
             # creo la barra de progreso
             progressbar = self.create_progressbar()
-            # envio el video a procesar y guardo el video procesado
-            result_video = self.test_manager.apply_test(video, video_path, progressbar)
-            # elimino el progressbar
-            #progressbar.destroy()
+            self.master.after(1)
+            
+            # activo la barra de carga
+            progressbar.start(10)
+            
+            # desactivo el boton de procesamiento
+            self.process_button.config(state=tk.DISABLED)
+            
+            # creo un hilo para procesar el video
+            thread = threading.Thread(target=self.process_video_thread, args=(video, video_path))
+            thread.start()
+            
+            # elimino el progressbar y activo el boton nuevamente
+            progressbar.destroy()
+            self.process_button.config(state=tk.NORMAL)
+    
+    
+    def process_video_thread(self, video, video_path):
+        # envio el video a procesar y guardo el video procesado
+        result_video = self.test_manager.apply_test(video, video_path)
+        
+        # le doy el video al reproductor de video
+        self.video_player.set_video(result_video)
     
     def create_video_player(self):
         self.video_frame = ttk.Frame(self.master, width=800, height=500)
@@ -75,7 +95,7 @@ class MainScreen:
     
     
     def create_progressbar(self):
-        progressbar = ttk.Progressbar(self.master, length=800)
+        progressbar = ttk.Progressbar(self.master, length=800, mode="indeterminate")
         progressbar.pack()
         return progressbar
     

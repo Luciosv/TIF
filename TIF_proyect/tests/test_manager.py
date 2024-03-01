@@ -36,11 +36,11 @@ class TestManager:
         return self.current_test
     
     
-    def apply_test(self, video, video_path, progressbar):
+    def apply_test(self, video, video_path):
         video_test = None
         
         if self.current_test in self.tests:
-            video_test = self.tests[ self.current_test ].apply_test(video, video_path, progressbar)
+            video_test = self.tests[ self.current_test ].apply_test(video, video_path)
         
         return video_test
             

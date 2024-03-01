@@ -20,11 +20,11 @@ class TUG(TestBase):
         self.previous_skipped_frame = 0
         self.MAX_ACCUMULATE_ERROR = 10
     
-    def apply_test(self, video, video_path, progressbar):
+    def apply_test(self, video, video_path):
         # Implementación específica del test TUG
         
         # proceso el video
-        video_result = self.process_video(video, video_path, progressbar)
+        video_result = self.process_video(video, video_path)
         
         # retorno el video procesado
         return video_result
@@ -45,7 +45,7 @@ class TUG(TestBase):
     PROCESA EL VIDEO CON MEDIAPIPE
     REPRESENTA EL WHILE QUE PROCESA CADA FRAME
     """
-    def process_video(self, video, video_path, progressbar):
+    def process_video(self, video, video_path):
         mp_pose = mp.solutions.pose
         
         frame_count = 0
@@ -85,11 +85,6 @@ class TUG(TestBase):
                 # PASO AL SIGUIENTE FRAME
                 ret, frame = video.read()
                 frame_count += 1
-                
-                # ACTUALIZO LA BARRA DE PROGRESO
-                amount = frame_count / int(video.get(cv2.CAP_PROP_FRAME_COUNT))*100 - 0.1
-                progressbar.step(amount)
-                print(amount)
         
         # devuelvo el video procesado
         return video_result

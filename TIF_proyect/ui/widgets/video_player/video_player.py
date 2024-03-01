@@ -42,6 +42,7 @@ class VideoPlayer:
     
     def set_video(self, video):
         self.video = video
+        self.preview()
         
     
     def create_widgets(self):
