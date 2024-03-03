@@ -17,7 +17,7 @@ class VideoPlayer:
     
     def __init__(self, master):
         self.master = master
-        self.background = cv2.imread("C:/Users/Joaqu/OneDrive/Documents/GitHub/TIF/TIF_proyect/ui/widgets/video_player/assets/black_background_1920x1080.png")
+        self.background = cv2.imread("D:/repositorio/TIF_repo/TIF/TIF_proyect/ui/widgets/video_player/assets/black_background_1920x1080.png")
         self.screen = tk.Label(self.master)
         self.screen.pack()
         self.master.after(10, self.show_black_screen)
