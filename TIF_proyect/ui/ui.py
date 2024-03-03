@@ -94,10 +94,12 @@ class MainScreen:
 
     
     def create_video_player(self):
-        self.video_frame = ttk.Frame(self.master, width=800, height=500)
+        width = int(self.master.winfo_screenwidth() * 0.45)
+        height = int(self.master.winfo_screenheight() * 0.45)
+        self.video_frame = ttk.Frame(self.master, width=width, height=height + 50)
         self.video_frame.pack_propagate(False)
-        self.video_frame.pack()
-        self.video_player = VideoPlayer(self.video_frame)
+        self.video_frame.pack(pady=10)
+        self.video_player = VideoPlayer(self.video_frame, width, height)
     
     
     def create_progressbar(self):

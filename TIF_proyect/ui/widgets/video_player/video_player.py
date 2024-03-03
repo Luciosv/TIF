@@ -15,7 +15,7 @@ import imutils
 
 class VideoPlayer:
     
-    def __init__(self, master):
+    def __init__(self, master, width, height):
         self.master = master
         self.background = cv2.imread("D:/repositorio/TIF_repo/TIF/TIF_proyect/ui/widgets/video_player/assets/black_background_1920x1080.png")
         self.screen = tk.Label(self.master)
@@ -28,6 +28,10 @@ class VideoPlayer:
         self.progress_bar = None
         
         self.playing = False
+        
+        # ajusto los tamaños relativos a la pantalla del monitor
+        self.width = width
+        self.height = height
                 
         self.create_widgets()
         
@@ -65,7 +69,7 @@ class VideoPlayer:
     
     
     def set_image_in_screen(self, image):
-        image = imutils.resize(image, width=800)
+        image = imutils.resize(image, width=self.width)
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
         
         im = Image.fromarray(image)
