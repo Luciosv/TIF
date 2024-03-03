@@ -30,6 +30,8 @@ class VideoPlayer:
         self.playing = False
                 
         self.create_widgets()
+        
+        self.playing_video()
     
     
     def get_video(self):
@@ -88,10 +90,6 @@ class VideoPlayer:
 
     def preview(self):
         # hago que el primer frame sea la preview
-        
-        
-        
-        #ret, frame = self.video.read()
         ret, frame = self.video_cap.read()
         
         if ret:
@@ -103,31 +101,34 @@ class VideoPlayer:
 
 
     def playing_video(self):
-        if self.playing:
-            
+        fpms = 100
+        if self.video_cap is not None:
             # si el usuario cambio el frame
             if self.video_cap.get(cv2.CAP_PROP_POS_FRAMES) != self.progress_bar.get():
                 self.video_cap.set(cv2.CAP_PROP_POS_FRAMES, self.progress_bar.get())
+                ret = self.change_frame()
+                if not ret:
+                    self.stop()
             
-            ret = self.change_frame()
-            
-            # cambio el valor del progressbar
-            self.progress_bar.set(self.video_cap.get(cv2.CAP_PROP_POS_FRAMES))
-            
-            fps = 1 / self.video_cap.get(cv2.CAP_PROP_FPS)
-            fpms = int(fps * 1000)
-            
-            self.master.after(fpms,self.playing_video)
-            
-            # se termina el video
-            if not ret:
-                self.stop()
+            if self.playing:
+                
+                ret = self.change_frame()
+                
+                # cambio el valor del progressbar
+                self.progress_bar.set(self.video_cap.get(cv2.CAP_PROP_POS_FRAMES))
+                
+                fps = 1 / self.video_cap.get(cv2.CAP_PROP_FPS)
+                fpms = int(fps * 1000)
+                
+                # se termina el video
+                if not ret:
+                    self.stop()
+                
+        self.master.after(fpms,self.playing_video)
                 
     
             
     def change_frame(self):
-        
-        #ret, frame = self.video.read()
         ret, frame = self.video_cap.read()
         
         if ret:
@@ -141,7 +142,6 @@ class VideoPlayer:
             # PLAY
             if not self.playing:
                 self.playing = True
-                self.playing_video()
             
                 # cambio el boton
                 self.play_button.config(text="Pause")
