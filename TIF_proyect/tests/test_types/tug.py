@@ -56,7 +56,10 @@ class TUG(TestBase):
                 static_image_mode=False) as pose:
             
             # leo el primer frame
-            ret, frame = video.read()
+            
+            #ret, frame = video.read()
+            ret, frame = cv2.VideoCapture(video_path).read()
+            
             
             while ret :
                 # PROCESO EL FRAME
@@ -87,6 +90,7 @@ class TUG(TestBase):
                 frame_count += 1
         
         # devuelvo el video procesado
+        video_result.release()
         return video_result
         
 
@@ -173,7 +177,7 @@ class TUG(TestBase):
 
 if __name__ == "__main__":
     tug = TUG()
-    video_path = "D:/repositorio/TIF_repo/TIF/TIF_proyect/tests/test_types/TUG2.mp4"
+    video_path = "C:/Users/Joaqu/OneDrive/Documents/GitHub/TIF_proyect/tests/test_types/TUG2.mp4"
     video = cv2.VideoCapture(video_path)
     
     tug.process_video(video, video_path)

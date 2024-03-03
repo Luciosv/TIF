@@ -28,6 +28,7 @@ class MainScreen:
         self.create_widgets()
         
         self.test_manager = TestManager(master)
+        
     
     def configuration_main_screen(self):
         self.master.title("TIF")
@@ -47,7 +48,8 @@ class MainScreen:
         self.process_button = ttk.Button(self.master,text="Procesar Video", 
                                       width=20, command=self.process_video)
         self.process_button.place(x=10, y=70)
-        #self.create_progressbar()
+        
+        
     
     
     def load_video(self):
@@ -62,11 +64,9 @@ class MainScreen:
         video_path = self.video_player.get_video_path()
         if video is not None and video_path is not None:
             # creo la barra de progreso
-            progressbar = self.create_progressbar()
+            self.progessbar = self.create_progressbar()
+
             self.master.after(1)
-            
-            # activo la barra de carga
-            progressbar.start(10)
             
             # desactivo el boton de procesamiento
             self.process_button.config(state=tk.DISABLED)
@@ -75,17 +75,16 @@ class MainScreen:
             thread = threading.Thread(target=self.process_video_thread, args=(video, video_path))
             thread.start()
             
-            # elimino el progressbar y activo el boton nuevamente
-            progressbar.destroy()
-            self.process_button.config(state=tk.NORMAL)
-    
-    
+             
     def process_video_thread(self, video, video_path):
         # envio el video a procesar y guardo el video procesado
         result_video = self.test_manager.apply_test(video, video_path)
         
         # le doy el video al reproductor de video
         self.video_player.set_video(result_video)
+        # elimino el progressbar y activo el boton nuevamente
+        self.progessbar.destroy()
+        self.process_button.config(state=tk.NORMAL)
     
     def create_video_player(self):
         self.video_frame = ttk.Frame(self.master, width=800, height=500)
@@ -97,6 +96,7 @@ class MainScreen:
     def create_progressbar(self):
         progressbar = ttk.Progressbar(self.master, length=800, mode="indeterminate")
         progressbar.pack()
+        progressbar.start(10)
         return progressbar
     
     def run(self):

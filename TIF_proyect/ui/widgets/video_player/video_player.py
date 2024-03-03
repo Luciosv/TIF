@@ -17,14 +17,14 @@ class VideoPlayer:
     
     def __init__(self, master):
         self.master = master
-        
-        self.background = cv2.imread("D:/repositorio/TIF_repo/TIF/TIF_proyect/ui/widgets/video_player/assets/black_background_1920x1080.png")
+        self.background = cv2.imread("C:/Users/Joaqu/OneDrive/Documents/GitHub/TIF/TIF_proyect/ui/widgets/video_player/assets/black_background_1920x1080.png")
         self.screen = tk.Label(self.master)
         self.screen.pack()
         self.master.after(10, self.show_black_screen)
         
         self.video_path = None
         self.video = None
+        self.video_cap = None
         self.progress_bar = None
         
         self.playing = False
@@ -81,19 +81,24 @@ class VideoPlayer:
         if len(video_path) > 0:
             self.video_path = video_path
             self.video = cv2.VideoCapture(self.video_path)
+            self.video_cap = cv2.VideoCapture(self.video_path)
             
             self.preview()
     
 
     def preview(self):
         # hago que el primer frame sea la preview
-        ret, frame = self.video.read()
+        
+        
+        
+        #ret, frame = self.video.read()
+        ret, frame = self.video_cap.read()
         
         if ret:
             self.set_image_in_screen(frame)
             
             # creo el progressbar con el tiempo final
-            end = self.video.get(cv2.CAP_PROP_FRAME_COUNT)
+            end = self.video_cap.get(cv2.CAP_PROP_FRAME_COUNT)
             self.create_progressbar(0, end)
 
 
@@ -101,15 +106,15 @@ class VideoPlayer:
         if self.playing:
             
             # si el usuario cambio el frame
-            if self.video.get(cv2.CAP_PROP_POS_FRAMES) != self.progress_bar.get():
-                self.video.set(cv2.CAP_PROP_POS_FRAMES, self.progress_bar.get())
+            if self.video_cap.get(cv2.CAP_PROP_POS_FRAMES) != self.progress_bar.get():
+                self.video_cap.set(cv2.CAP_PROP_POS_FRAMES, self.progress_bar.get())
             
             ret = self.change_frame()
             
             # cambio el valor del progressbar
-            self.progress_bar.set(self.video.get(cv2.CAP_PROP_POS_FRAMES))
+            self.progress_bar.set(self.video_cap.get(cv2.CAP_PROP_POS_FRAMES))
             
-            fps = 1 / self.video.get(cv2.CAP_PROP_FPS)
+            fps = 1 / self.video_cap.get(cv2.CAP_PROP_FPS)
             fpms = int(fps * 1000)
             
             self.master.after(fpms,self.playing_video)
@@ -121,7 +126,9 @@ class VideoPlayer:
     
             
     def change_frame(self):
-        ret, frame = self.video.read()
+        
+        #ret, frame = self.video.read()
+        ret, frame = self.video_cap.read()
         
         if ret:
             self.set_image_in_screen(frame)
