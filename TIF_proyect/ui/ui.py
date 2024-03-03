@@ -78,13 +78,15 @@ class MainScreen:
              
     def process_video_thread(self, video, video_path):
         # envio el video a procesar y guardo el video procesado
-        result_video = self.test_manager.apply_test(video, video_path)
+        result_video_path = self.test_manager.apply_test(video, video_path)
         
         # le doy el video al reproductor de video
-        self.video_player.set_video(result_video)
+        self.video_player.load_video(result_video_path)
+        
         # elimino el progressbar y activo el boton nuevamente
         self.progessbar.destroy()
         self.process_button.config(state=tk.NORMAL)
+
     
     def create_video_player(self):
         self.video_frame = ttk.Frame(self.master, width=800, height=500)

@@ -52,7 +52,7 @@ class TUG(TestBase):
         
         frame_count = 0
         
-        video_result = self.create_video(video, video_path)
+        video_result, result_video_path = self.create_video(video, video_path)
         
         with mp_pose.Pose(
                 static_image_mode=False) as pose:
@@ -80,6 +80,9 @@ class TUG(TestBase):
                 
                 # CALCULO LOS ANGULOS
                 self.calculate_angles(landmarks_x, landmarks_y)
+
+                #CALCULO POSICION DE CADERA
+                self.calculate_hip_pos(landmarks_x, landmarks_y, width, height)
                 
                 #CALCULO POSICION DE CADERA
                 self.calculate_hip_pos(landmarks_x, landmarks_y, width, height)
@@ -96,7 +99,8 @@ class TUG(TestBase):
         
         # devuelvo el video procesado
         video_result.release()
-        return video_result
+        
+        return result_video_path
         
 
     def create_video(self, video, video_path):
@@ -111,7 +115,7 @@ class TUG(TestBase):
         resolution = (width, height)   #ej. (640, 480)
         
         video_result = cv2.VideoWriter(video_file_result, fourcc, FPS_result, resolution) # (name.mp4, fourcc, FPS, resolution)
-        return video_result
+        return video_result, video_file_result
     
     
     def get_landmarks(self, result, width, height):
