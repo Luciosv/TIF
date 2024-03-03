@@ -9,6 +9,7 @@ from .test_base import TestBase
 import mediapipe as mp
 import cv2
 import numpy as np
+from math import acos, degrees
 
 class TUG(TestBase):
     def __init__(self):
@@ -19,6 +20,7 @@ class TUG(TestBase):
         self.accumulated_error = 0
         self.previous_skipped_frame = 0
         self.MAX_ACCUMULATE_ERROR = 10
+        
     
     def apply_test(self, video, video_path):
         # Implementación específica del test TUG
@@ -79,6 +81,9 @@ class TUG(TestBase):
                 # CALCULO LOS ANGULOS
                 self.calculate_angles(landmarks_x, landmarks_y)
                 
+                #CALCULO POSICION DE CADERA
+                self.calculate_hip_pos(landmarks_x, landmarks_y, width, height)
+                
                 # GENERO EL FRAME OUTPUT
                 output_frame = self.generate_output_frame(frame, landmarks_x, landmarks_y)
                 
@@ -131,7 +136,42 @@ class TUG(TestBase):
     
     
     def calculate_angles(self, landmarks_x, landmarks_y):
-        pass
+        vector_angles_der = []
+        vector_angles_izq = []
+        
+        # Calculo de ángulo pierna derecha:
+        p1 = np.array([landmarks_x[0], landmarks_y[0]])
+        p2 = np.array([landmarks_x[1], landmarks_y[1]])
+        p3 = np.array([landmarks_x[2], landmarks_y[2]])
+
+        l1 = np.linalg.norm(p2 - p3)
+        l2 = np.linalg.norm(p1 - p3)
+        l3 = np.linalg.norm(p1 - p2)
+
+        angle = degrees(acos((l1**2 + l3**2 - l2**2) / (2 * l1 * l3)))
+        vector_angles_der = np.append(vector_angles_der, angle)
+        
+        #Calculo de ángulo pierna izquierda
+        p1 = np.array([landmarks_x[3], landmarks_y[3]])
+        p2 = np.array([landmarks_x[4], landmarks_y[4]])
+        p3 = np.array([landmarks_x[5], landmarks_y[5]])
+
+        l1 = np.linalg.norm(p2 - p3)
+        l2 = np.linalg.norm(p1 - p3)
+        l3 = np.linalg.norm(p1 - p2)
+
+        angle = degrees(acos((l1**2 + l3**2 - l2**2) / (2 * l1 * l3)))
+        vector_angles_izq = np.append(vector_angles_izq, angle)
+
+    def calculate_hip_pos(self, landmarks_x, landmarks_y, width, height):
+        vector_hip_posX = []
+        vector_hip_posY = []
+        
+        hipPromY = 100 - (((landmarks_y[0]+landmarks_y[5])/2)/height)*100 #100- menos va si es der-izq
+        vector_hip_posY = np.append(vector_hip_posY, hipPromY)
+        
+        hipPromX = 100 - (((landmarks_x[0]+landmarks_x[5])/2)/width)*100 #100- menos va si es der-izq
+        vector_hip_posX = np.append(vector_hip_posX, hipPromX)
     
     
     def generate_output_frame(self, frame, landmarks_x, landmarks_y):
