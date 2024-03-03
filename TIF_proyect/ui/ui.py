@@ -32,8 +32,13 @@ class MainScreen:
     
     def configuration_main_screen(self):
         self.master.title("TIF")
-        self.master.geometry("1500x900")
-        self.master.resizable(False,False)
+        self.master.state('zoomed')
+        
+        width = self.master.winfo_screenwidth()
+        height = self.master.winfo_screenheight()
+        self.master.geometry(f"{width}x{height}")
+        
+        #self.master.resizable(False, False)
     
     
     def create_widgets(self):
