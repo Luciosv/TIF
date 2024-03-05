@@ -52,11 +52,16 @@ class VideoPlayer:
         
     
     def create_widgets(self):
-        self.play_button = tk.Button(self.master, text="Play", command=self.play_pause)
-        self.play_button.pack(side=tk.LEFT)
+        # cargo las imagenes de los botones
+        self.image_play = tk.PhotoImage(file="D:/repositorio/TIF_repo/TIF/TIF_proyect/ui/widgets/video_player/assets/play button.png")
+        self.image_pause = tk.PhotoImage(file="D:/repositorio/TIF_repo/TIF/TIF_proyect/ui/widgets/video_player/assets/pause button.png")
+        self.image_stop= tk.PhotoImage(file="D:/repositorio/TIF_repo/TIF/TIF_proyect/ui/widgets/video_player/assets/stop button.png")
+        
+        self.play_button = tk.Button(self.master, image=self.image_play, command=self.play_pause, bg="#02111B", width="30",height="30")
+        self.play_button.pack(side=tk.LEFT, pady=10, padx=5)
 
-        self.stop_button = tk.Button(self.master, text="Stop", command=self.stop)
-        self.stop_button.pack(side=tk.LEFT)
+        self.stop_button = tk.Button(self.master, image=self.image_stop, command=self.stop, bg="#02111B", width="30",height="30")
+        self.stop_button.pack(side=tk.LEFT, pady=10, padx=20)
 
 
     def create_progressbar(self, from_, to):
@@ -64,7 +69,7 @@ class VideoPlayer:
         if self.progress_bar is not None:
             self.progress_bar.destroy()
         
-        self.progress_bar = tk.Scale(self.master, from_=from_, to=to, orient=tk.HORIZONTAL)
+        self.progress_bar = tk.Scale(self.master, from_=from_, to=to, orient=tk.HORIZONTAL, bg="#02111B")
         self.progress_bar.pack(fill=tk.X)
     
     
@@ -148,13 +153,13 @@ class VideoPlayer:
                 self.playing = True
             
                 # cambio el boton
-                self.play_button.config(text="Pause")
+                self.play_button.config(image=self.image_pause)
             
             # PAUSA
             else:
                 self.playing = False
                 # cambio el boton
-                self.play_button.config(text="Play")
+                self.play_button.config(image=self.image_play)
 
 
     def stop(self):
