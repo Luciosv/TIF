@@ -7,6 +7,7 @@ Created on Fri Feb 23 10:34:44 2024
 
 import tkinter as tk
 from tkinter import ttk
+from PIL import Image, ImageTk
 from tkinter import filedialog
 import threading
 
@@ -23,6 +24,7 @@ class MainScreen:
     
     def __init__(self, master):
         self.master = master
+        self.master.attributes('-transparentcolor', 'white')
         
         self.configuration_main_screen()
         self.create_widgets()
@@ -38,21 +40,30 @@ class MainScreen:
         height = self.master.winfo_screenheight()
         self.master.geometry(f"{width}x{height}")
         
-        #self.master.resizable(False, False)
+        # pongo el fondo de pantalla
+        bg = tk.PhotoImage(file="assets_diseño_1/background.png")
+        
+        background_label = ttk.Label(self.master, image = bg)
+        background_label.image = bg
+        background_label.place(x=0,y=0,relwidth=1,relheight=1)
     
     
     def create_widgets(self):
         self.create_video_player()
         
         # Boton para cargar un video
-        self.load_button = ttk.Button(self.master,text="Cargar Video", 
-                                      width=20, command=self.load_video)
-        self.load_button.place(x=10, y=10)
+        self.image_button_load = tk.PhotoImage(file="assets_diseño_1/button cargar boton.png")
+        self.load_button = tk.Button(self.master, image=self.image_button_load,
+                                      width="218",height="81", command=self.load_video,
+                                      bd=0, highlightthickness=0, bg="white")
+        self.load_button.place(x=15, y=18)
         
         # Boton para procesar el video
-        self.process_button = ttk.Button(self.master,text="Procesar Video", 
-                                      width=20, command=self.process_video)
-        self.process_button.place(x=10, y=70)
+        self.image_button_process = tk.PhotoImage(file="assets_diseño_1/button procesar video.png")
+        self.process_button = tk.Button(self.master,image=self.image_button_process, 
+                                      width="218",height="81", command=self.process_video,
+                                      bd=0, highlightthickness=0, bg="white")
+        self.process_button.place(x=15, y=135)
         
         
     
