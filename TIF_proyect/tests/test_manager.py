@@ -29,7 +29,7 @@ class TestManager:
     
     
     def get_test_type(self):
-        return self.tests.keys()
+        return list(self.tests.keys())
     
     
     def get_current_test(self):

@@ -13,6 +13,7 @@ import threading
 
 from widgets.video_player.video_player import VideoPlayer
 from tests.test_manager import TestManager
+from widgets.select_tests.select_tests import SelectTests
 
 """
 La clase MainScreen representa la pantalla principal de la interfaz de usuario 
@@ -30,6 +31,7 @@ class MainScreen:
         self.create_frames()
         
         self.test_manager = TestManager(master)
+        self.create_select_test()
         
     
     def configuration_main_screen(self):
@@ -87,6 +89,12 @@ class MainScreen:
                                       width="218",height="81", command=self.process_video,
                                       bd=0, highlightthickness=0, bg="#02111B")
         self.process_button.place(x=15, y=135)
+    
+    
+    def create_select_test(self):
+        options = self.test_manager.get_test_type()
+        
+        self.select_tests = SelectTests(self.master, options=options, x=15, y=252)
     
     
     def load_video(self):

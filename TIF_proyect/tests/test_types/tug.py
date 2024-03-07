@@ -13,7 +13,7 @@ from math import acos, degrees
 
 class TUG(TestBase):
     def __init__(self):
-        super().__init__("Time Up and Go - TUG")
+        super().__init__("TUG")
         
         # VARIBALES NECESARIAS PARA SABER SI EL VIDEO ES PROCESABLE
         self.skipped_frame_count = 0

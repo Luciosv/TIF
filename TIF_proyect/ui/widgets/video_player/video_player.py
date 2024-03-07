@@ -57,10 +57,10 @@ class VideoPlayer:
         self.image_pause = tk.PhotoImage(file="D:/repositorio/TIF_repo/TIF/TIF_proyect/ui/widgets/video_player/assets/pause button.png")
         self.image_stop= tk.PhotoImage(file="D:/repositorio/TIF_repo/TIF/TIF_proyect/ui/widgets/video_player/assets/stop button.png")
         
-        self.play_button = tk.Button(self.master, image=self.image_play, command=self.play_pause, bg="#02111B", width="30",height="30")
+        self.play_button = tk.Button(self.master, image=self.image_play, command=self.play_pause, bg="#02111B", width="30",height="30", bd=0, highlightthickness=0)
         self.play_button.pack(side=tk.LEFT, pady=10, padx=5)
 
-        self.stop_button = tk.Button(self.master, image=self.image_stop, command=self.stop, bg="#02111B", width="30",height="30")
+        self.stop_button = tk.Button(self.master, image=self.image_stop, command=self.stop, bg="#02111B", width="30",height="30", bd=0, highlightthickness=0)
         self.stop_button.pack(side=tk.LEFT, pady=10, padx=20)
 
 
@@ -69,7 +69,7 @@ class VideoPlayer:
         if self.progress_bar is not None:
             self.progress_bar.destroy()
         
-        self.progress_bar = tk.Scale(self.master, from_=from_, to=to, orient=tk.HORIZONTAL, bg="#02111B")
+        self.progress_bar = tk.Scale(self.master, from_=from_, to=to, orient=tk.HORIZONTAL, bg="#DB5461")
         self.progress_bar.pack(fill=tk.X)
     
     
@@ -167,7 +167,7 @@ class VideoPlayer:
             self.playing = False
             self.video.set(cv2.CAP_PROP_POS_FRAMES, 0)
             # cambio el boton
-            self.play_button.config(text="Play")
+            self.play_button.config(image=self.image_play)
             # cambio el valor del progressbar
             self.progress_bar.set(0)
             
