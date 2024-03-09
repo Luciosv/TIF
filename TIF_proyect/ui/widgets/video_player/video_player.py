@@ -12,12 +12,11 @@ from PIL import Image
 from PIL import ImageTk
 import imutils
 
-
 class VideoPlayer:
     
     def __init__(self, master, width, height):
         self.master = master
-        self.background = cv2.imread("D:/repositorio/TIF_repo/TIF/TIF_proyect/ui/widgets/video_player/assets/black_background_1920x1080.png")
+        self.background = cv2.imread("widgets/video_player/assets/black_background_1920x1080.png")
         self.screen = tk.Label(self.master)
         self.screen.pack()
         self.master.after(10, self.show_black_screen)
@@ -53,9 +52,9 @@ class VideoPlayer:
     
     def create_widgets(self):
         # cargo las imagenes de los botones
-        self.image_play = tk.PhotoImage(file="D:/repositorio/TIF_repo/TIF/TIF_proyect/ui/widgets/video_player/assets/play button.png")
-        self.image_pause = tk.PhotoImage(file="D:/repositorio/TIF_repo/TIF/TIF_proyect/ui/widgets/video_player/assets/pause button.png")
-        self.image_stop= tk.PhotoImage(file="D:/repositorio/TIF_repo/TIF/TIF_proyect/ui/widgets/video_player/assets/stop button.png")
+        self.image_play = tk.PhotoImage(file="widgets/video_player/assets/play button.png")
+        self.image_pause = tk.PhotoImage(file="widgets/video_player/assets/pause button.png")
+        self.image_stop= tk.PhotoImage(file="widgets/video_player/assets/stop button.png")
         
         self.play_button = tk.Button(self.master, image=self.image_play, command=self.play_pause, bg="#02111B", width="30",height="30", bd=0, highlightthickness=0)
         self.play_button.pack(side=tk.LEFT, pady=10, padx=5)

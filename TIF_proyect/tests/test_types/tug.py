@@ -221,7 +221,7 @@ class TUG(TestBase):
 
 if __name__ == "__main__":
     tug = TUG()
-    video_path = "C:/Users/Joaqu/OneDrive/Documents/GitHub/TIF_proyect/tests/test_types/TUG2.mp4"
+    video_path = ""
     video = cv2.VideoCapture(video_path)
     
     tug.process_video(video, video_path)

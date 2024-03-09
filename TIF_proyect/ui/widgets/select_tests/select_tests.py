@@ -18,7 +18,7 @@ class SelectTests():
     
     def create_button(self, x, y, width, heighti):
         # creo la imagen para el boton
-        self.image_button = tk.PhotoImage(file="D:/repositorio/TIF_repo/TIF/TIF_proyect/ui/widgets/select_tests/assets/button seleccion.png")
+        self.image_button = tk.PhotoImage(file="widgets/select_tests/assets/button seleccion.png")
         
         # agarro la primer opcion de options para que sea por defecto la opcion elegida
         self.selected_option.set(self.options[0])
