@@ -69,7 +69,7 @@ class VideoPlayer:
             self.progress_bar.destroy()
         
         self.progress_bar = tk.Scale(self.master, from_=from_, to=to, orient=tk.HORIZONTAL, bg="#DB5461")
-        self.progress_bar.pack(fill=tk.X)
+        self.progress_bar.pack(fill=tk.X, pady=30)
     
     
     def set_image_in_screen(self, image):
