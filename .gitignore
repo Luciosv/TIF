@@ -13,3 +13,7 @@ TIF_proyect/tests/test_types/__pycache__/test_base.cpython-311.pyc
 TIF_proyect/tests/test_types/__pycache__/tug.cpython-311.pyc
 TIF_proyect/ui/widgets/select_tests/__pycache__/select_tests.cpython-311.pyc
 TIF_proyect/ui/widgets/video_player/__pycache__/video_player.cpython-311.pyc
+/TIF_proyect/.spyproject
+/TIF_proyect/tests/__pycache__
+/TIF_proyect/tests/test_types/__pycache__
+/TIF_proyect/ui/widgets/select_tests/__pycache__
