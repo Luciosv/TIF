@@ -54,7 +54,7 @@ class MainScreen:
         background_label = ttk.Label(self.master, image = bg)
         background_label.image = bg
         background_label.place(x=0,y=0,relwidth=1,relheight=1)
-    
+        self.master.state('zoomed')
     
     def create_frames(self):
         # frame para texto
@@ -121,6 +121,7 @@ class MainScreen:
             # creo un hilo para procesar el video
             thread = threading.Thread(target=self.process_video_thread, args=(video, video_path))
             thread.start()
+                
             
              
     def process_video_thread(self, video, video_path):
@@ -133,7 +134,7 @@ class MainScreen:
         # elimino el progressbar y activo el boton nuevamente
         self.progessbar.destroy()
         self.process_button.config(state=tk.NORMAL)
-
+        
     
     def create_video_player(self):
         # creo el label para la imagen

@@ -10,10 +10,10 @@ from .test_types.tug import TUG
 
 from .results_display import ResultsDisplay
 
-
 class TestManager:
     
     def __init__(self, master):
+        self.pantalla = master
         self.results_display = ResultsDisplay(master)
         
         # -------- CREACION DE LOS TEST --------
@@ -48,11 +48,11 @@ class TestManager:
     
     def create_tests(self):
         # defino todos los test
-        tug = TUG()
+        tug = TUG(self.pantalla)
         
         # los agrego con el formato NOMBRE - TEST
         self.tests = { tug.name : tug }
-
+        
 
 if __name__ == "__main__":
     test_manager = TestManager([])
