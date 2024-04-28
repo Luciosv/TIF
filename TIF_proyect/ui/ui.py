@@ -55,7 +55,9 @@ class MainScreen:
         background_label.image = bg
         background_label.place(x=0,y=0,relwidth=1,relheight=1)
         self.master.state('zoomed')
-    
+        self.master.attributes("-topmost", True)
+        self.master.attributes("-topmost", False)
+        
     def create_frames(self):
         # frame para texto
         self.text_frame = tk.Frame(self.master, width=261, height=633, bg="#02111B")
@@ -110,6 +112,7 @@ class MainScreen:
         video = self.video_player.get_video()
         video_path = self.video_player.get_video_path()
         if video is not None and video_path is not None:
+            
             # creo la barra de progreso
             self.progessbar = self.create_progressbar()
 
@@ -149,9 +152,8 @@ class MainScreen:
     
     
     def create_progressbar(self):
-        progressbar = ttk.Progressbar(self.master, length=800, mode="indeterminate")
-        progressbar.lift()
-        progressbar.pack()
+        progressbar = ttk.Progressbar(self.master, length=585, mode="indeterminate")
+        progressbar.place(x=387, y=390)
         progressbar.start(10)
         return progressbar
     

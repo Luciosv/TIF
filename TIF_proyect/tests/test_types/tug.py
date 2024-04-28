@@ -278,7 +278,7 @@ class TUG(TestBase):
         ax1.set_ylabel("Porcentaje del frame [%]")
         ax1.set_title("Posición de la cadera en el video")
         #ax1.legend(['Desplazamiento horizontal de cadera en video','Altura de cadera en video'])
-        ax1.legend(['Distancia horizontal', 'Altura cadera']) #Inicio subida', 'Fin subida'
+        #ax1.legend(['Distancia horizontal', 'Altura cadera']) #Inicio subida', 'Fin subida'
         return figure
     
     def show_graphic(self):

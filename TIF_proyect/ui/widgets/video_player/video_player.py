@@ -28,6 +28,9 @@ class VideoPlayer:
         
         self.playing = False
         
+        self.fps_original = 0
+        self.delta_tiempo = 0
+        
         # ajusto los tamaños relativos a la pantalla del monitor
         self.width = width
         self.height = height
@@ -68,7 +71,7 @@ class VideoPlayer:
         if self.progress_bar is not None:
             self.progress_bar.destroy()
         
-        self.progress_bar = tk.Scale(self.master, from_=from_, to=to, orient=tk.HORIZONTAL, bg="#DB5461")
+        self.progress_bar = tk.Scale(self.master, from_=from_, to=to, orient=tk.HORIZONTAL, bg="#DB5461",digits=4, resolution = self.delta_tiempo)
         self.progress_bar.pack(fill=tk.X, pady=30)
     
     
@@ -93,6 +96,9 @@ class VideoPlayer:
             self.video = cv2.VideoCapture(self.video_path)
             self.video_cap = cv2.VideoCapture(self.video_path)
             
+            self.fps_original = self.video_cap.get(cv2.CAP_PROP_FPS)
+            self.delta_tiempo = 1/self.fps_original
+            
             self.preview()
     
 
@@ -104,7 +110,7 @@ class VideoPlayer:
             self.set_image_in_screen(frame)
             
             # creo el progressbar con el tiempo final
-            end = self.video_cap.get(cv2.CAP_PROP_FRAME_COUNT)
+            end = self.video_cap.get(cv2.CAP_PROP_FRAME_COUNT) * self.delta_tiempo 
             self.create_progressbar(0, end)
 
 
@@ -112,8 +118,8 @@ class VideoPlayer:
         fpms = 100
         if self.video_cap is not None:
             # si el usuario cambio el frame
-            if self.video_cap.get(cv2.CAP_PROP_POS_FRAMES) != self.progress_bar.get():
-                self.video_cap.set(cv2.CAP_PROP_POS_FRAMES, self.progress_bar.get())
+            if self.video_cap.get(cv2.CAP_PROP_POS_FRAMES) != self.progress_bar.get()/self.delta_tiempo:
+                self.video_cap.set(cv2.CAP_PROP_POS_FRAMES, self.progress_bar.get()/self.delta_tiempo)
                 ret = self.change_frame()
                 if not ret:
                     self.stop()
@@ -123,7 +129,7 @@ class VideoPlayer:
                 ret = self.change_frame()
                 
                 # cambio el valor del progressbar
-                self.progress_bar.set(self.video_cap.get(cv2.CAP_PROP_POS_FRAMES))
+                self.progress_bar.set(self.video_cap.get(cv2.CAP_PROP_POS_FRAMES)*self.delta_tiempo)
                 
                 fps = 1 / self.video_cap.get(cv2.CAP_PROP_FPS)
                 fpms = int(fps * 1000)
