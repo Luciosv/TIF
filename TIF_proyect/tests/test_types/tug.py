@@ -351,7 +351,7 @@ class TUG(TestBase):
             "Magenta --> Giro 180"
             ]
         
-        time_up, time_walk_1, time_turn, time_walk_2, time_down = self.calculate_times()
+        time_up, time_walk_1, time_turn, time_walk_2, time_down, time_all = self.calculate_times()
         
         text_results = [
             f"Pararse --> {time_up} s",
@@ -359,6 +359,7 @@ class TUG(TestBase):
             f"Giro 180 --> {time_turn} s",
             f"Caminata vuelta --> {time_walk_2} s",
             f"Sentarse --> {time_down} s",
+            f"Tiempo total --> {time_all} s"
             ]
         
         text_frame = tk.Frame(self.pantalla, width=220, height=600, bg="#02111B")
@@ -394,7 +395,10 @@ class TUG(TestBase):
         time_walk_2 = round(inicio_caida - fin_giro, 2)
         time_down = round(fin_caida - inicio_caida, 2)
         
-        return time_up, time_walk_1, time_turn, time_walk_2, time_down
+        time_all = time_up + time_walk_1 + time_walk_2 + time_turn + time_down
+        time_all = round(time_all)
+        
+        return time_up, time_walk_1, time_turn, time_walk_2, time_down, time_all
 
 if __name__ == "__main__":
     tug = TUG()
