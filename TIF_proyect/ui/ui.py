@@ -54,7 +54,7 @@ class MainScreen:
         background_label = ttk.Label(self.master, image = bg)
         background_label.image = bg
         background_label.place(x=0,y=0,relwidth=1,relheight=1)
-        self.master.state('zoomed')
+
         self.master.attributes("-topmost", True)
         self.master.attributes("-topmost", False)
         

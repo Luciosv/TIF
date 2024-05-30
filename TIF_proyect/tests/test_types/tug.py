@@ -332,6 +332,49 @@ class TUG(TestBase):
                 start = i - window_size
         return steps
 
+
+    def get_text_result(self):
+        # ORGANIZO EL TEXTO EN DOS PARTES
+        # UNA PARA LAS REFERENCIAS DE COLORES
+        # OTRA PARA LOS RESULTADOS DE LOS TIEMPOS
+        
+        title_one = "~~~~ REFERENCIAS ~~~~"
+        title_two = "~~~~ RESULTADOS ~~~~"
+        subtitle_two = "Se expresa el tiempo en segundos empleado para cada tarea:"
+        
+        references = [
+            "Azul --> Inicio - Fin Video",
+            "Rojo --> Transicion Parado/Sentado",
+            "Verde --> Caminata",
+            "Magenta --> Giro 180"
+            ]
+        
+        time_up, time_walk_1, time_turn, time_walk_2, time_down = self.calculate_times()
+        
+        text_results = [
+            f"Pararse --> {time_up}",
+            f"Caminata ida --> {time_walk_1}",
+            f"Giro 180 --> {time_turn}",
+            f"Caminata vuelta --> {time_walk_2}",
+            f"Sentarse --> {time_down}",
+            ]
+        
+        
+
+
+    def calculate_times(self):
+        inicio_subida, fin_subida = self.calculate_subida()
+        inicio_caida, fin_caida = self.calculate_bajada()
+        inicio_giro, fin_giro = self.calculate_turn()
+        
+        time_up = fin_subida - inicio_subida
+        time_walk_1 = inicio_giro - fin_subida
+        time_turn = fin_giro - inicio_giro
+        time_walk_2 = inicio_caida - fin_giro
+        time_down = fin_caida - inicio_caida
+        
+        return time_up, time_walk_1, time_turn, time_walk_2, time_down
+
 if __name__ == "__main__":
     tug = TUG()
     video_path = ""
