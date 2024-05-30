@@ -14,7 +14,7 @@ class TestManager:
     
     def __init__(self, master):
         self.pantalla = master
-        self.results_display = ResultsDisplay(master)
+        #self.results_display = ResultsDisplay(master)
         
         # -------- CREACION DE LOS TEST --------
         self.create_tests()

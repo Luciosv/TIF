@@ -114,8 +114,11 @@ class TUG(TestBase):
         # devuelvo el video procesado
         video_result.release()
         
-        #MUESTRO VIDEO
+        #MUESTRO Grafico
         self.show_graphic()
+        
+        # Muestro Texto
+        self.show_text_result()
         
         return result_video_path
         
@@ -333,14 +336,13 @@ class TUG(TestBase):
         return steps
 
 
-    def get_text_result(self):
+    def show_text_result(self):
         # ORGANIZO EL TEXTO EN DOS PARTES
         # UNA PARA LAS REFERENCIAS DE COLORES
         # OTRA PARA LOS RESULTADOS DE LOS TIEMPOS
         
         title_one = "~~~~ REFERENCIAS ~~~~"
         title_two = "~~~~ RESULTADOS ~~~~"
-        subtitle_two = "Se expresa el tiempo en segundos empleado para cada tarea:"
         
         references = [
             "Azul --> Inicio - Fin Video",
@@ -352,14 +354,33 @@ class TUG(TestBase):
         time_up, time_walk_1, time_turn, time_walk_2, time_down = self.calculate_times()
         
         text_results = [
-            f"Pararse --> {time_up}",
-            f"Caminata ida --> {time_walk_1}",
-            f"Giro 180 --> {time_turn}",
-            f"Caminata vuelta --> {time_walk_2}",
-            f"Sentarse --> {time_down}",
+            f"Pararse --> {time_up} s",
+            f"Caminata ida --> {time_walk_1} s",
+            f"Giro 180 --> {time_turn} s",
+            f"Caminata vuelta --> {time_walk_2} s",
+            f"Sentarse --> {time_down} s",
             ]
         
+        text_frame = tk.Frame(self.pantalla, width=220, height=600, bg="#02111B")
+        text_frame.place(x=1094, y=100)
         
+        # Crear y colocar etiquetas para title_one
+        label_title_one = tk.Label(text_frame, text=title_one, bg="#02111B", fg="white")
+        label_title_one.pack(pady=10)
+
+        # Crear y colocar etiquetas para references
+        for ref in references:
+            label_ref = tk.Label(text_frame, text=ref, bg="#02111B", fg="white")
+            label_ref.pack(anchor="w", padx=10)
+
+        # Crear y colocar etiquetas para title_two y subtitle_two
+        label_title_two = tk.Label(text_frame, text=title_two, bg="#02111B", fg="white")
+        label_title_two.pack(pady=10)
+
+        # Crear y colocar etiquetas para text_results
+        for result in text_results:
+            label_result = tk.Label(text_frame, text=result, bg="#02111B", fg="white")
+            label_result.pack(anchor="w", padx=10)
 
 
     def calculate_times(self):
@@ -367,11 +388,11 @@ class TUG(TestBase):
         inicio_caida, fin_caida = self.calculate_bajada()
         inicio_giro, fin_giro = self.calculate_turn()
         
-        time_up = fin_subida - inicio_subida
-        time_walk_1 = inicio_giro - fin_subida
-        time_turn = fin_giro - inicio_giro
-        time_walk_2 = inicio_caida - fin_giro
-        time_down = fin_caida - inicio_caida
+        time_up = round(fin_subida - inicio_subida, 2)
+        time_walk_1 = round(inicio_giro - fin_subida, 2)
+        time_turn = round(fin_giro - inicio_giro, 2)
+        time_walk_2 = round(inicio_caida - fin_giro, 2)
+        time_down = round(fin_caida - inicio_caida, 2)
         
         return time_up, time_walk_1, time_turn, time_walk_2, time_down
 
