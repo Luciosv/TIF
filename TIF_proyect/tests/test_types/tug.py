@@ -11,8 +11,9 @@ import cv2
 import numpy as np
 from math import acos, degrees
 import matplotlib 
+matplotlib.use('Agg')
 from matplotlib.figure import Figure
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 import tkinter as tk
 from matplotlib.backends.backend_tkagg import (
     FigureCanvasTkAgg,
@@ -184,10 +185,10 @@ class TUG(TestBase):
 
     def calculate_hip_pos(self, landmarks_x, landmarks_y, width, height):
         
-        hipPromY = 100 - (((landmarks_y[0]+landmarks_y[5])/2)/height)*100 #100- menos va si es der-izq
+        hipPromY = 100 - (((landmarks_y[0]+landmarks_y[3])/2)/height)*100 #100- menos va si es der-izq
         self.vector_hip_posY = np.append(self.vector_hip_posY, hipPromY)
         
-        hipPromX = 100 - (((landmarks_x[0]+landmarks_x[5])/2)/width)*100 #100- menos va si es der-izq
+        hipPromX = 100 - (((landmarks_x[0]+landmarks_x[3])/2)/width)*100 #100- menos va si es der-izq
         self.vector_hip_posX = np.append(self.vector_hip_posX, hipPromX)
         
     def calculate_subida(self):
@@ -205,10 +206,23 @@ class TUG(TestBase):
         inicio_caida=0
         fin_caida=0
         for i in saltos:        
-            inicio_caida= (self.frame_count - i[0]) *self.delta_tiempo
-            fin_caida= (self.frame_count - i[1]) *self.delta_tiempo
+            fin_caida= (self.frame_count - i[0]) *self.delta_tiempo
+            inicio_caida= (self.frame_count - i[1]) *self.delta_tiempo
         return inicio_caida , fin_caida
-            
+    
+    def calculate_turn(self):
+        hipPromXmax = np.max(self.vector_hip_posX)
+        checkini=1
+        iniciogiro=0
+        fingiro=0
+        for i in range(np.size(self.vector_hip_posX)):
+            # Hallar primera y última coincidencia del recorrido anterior
+            if (self.vector_hip_posX[i]>hipPromXmax*0.9 and checkini==1):
+                iniciogiro = i*self.delta_tiempo
+                checkini = 0
+            if (self.vector_hip_posX[i]>hipPromXmax*0.9):
+                fingiro = i*self.delta_tiempo
+        return iniciogiro, fingiro
     
     def generate_output_frame(self, frame, landmarks_x, landmarks_y):
         # GENERO LAS LINEAS
@@ -251,24 +265,31 @@ class TUG(TestBase):
     def get_graphic_result(self):
         figure = Figure(figsize=(6.65, 2.5), dpi=100)
         
-        matplotlib.use('TkAgg')
+        #matplotlib.use('TkAgg')
         ax1 = figure.add_subplot()
+        
         #rect : tuple (left, bottom, right, top), default: (0, 0, 1, 1)
         figure.tight_layout(rect=(0.01,0.03,1.005,0.95))
         
         inicio_subida, fin_subida = self.calculate_subida()
         inicio_caida, fin_caida = self.calculate_bajada()
+        inicio_giro, fin_giro = self.calculate_turn()
         
         ax1.plot(self.vector_tiempos, self.vector_hip_posX)
         ax1.plot(self.vector_tiempos, self.vector_hip_posY)
         ax1.axvline(x = inicio_subida, color = 'g', linestyle=':') #+{:5.0f}'.format(inicio_subida)
         ax1.axvline(x = fin_subida, color = 'b', linestyle=':')
         ax1.axvline(x = inicio_caida, color = 'g', linestyle=':')
-        ax1.axvline(x = fin_caida, color = 'b', linestyle=':')   
+        ax1.axvline(x = fin_caida, color = 'b', linestyle=':') 
+        ax1.axvline(x = inicio_giro, color = 'r', linestyle=':')
+        ax1.axvline(x = fin_giro, color = 'r', linestyle=':') 
         
         ax1.axvspan(self.vector_tiempos[0], inicio_subida, facecolor='b', alpha=0.1)
         ax1.axvspan(inicio_subida, fin_subida, facecolor='r', alpha=0.1)
-        ax1.axvspan(fin_subida ,inicio_caida, facecolor='g', alpha=0.1)
+        #ax1.axvspan(fin_subida ,inicio_caida, facecolor='g', alpha=0.1)
+        ax1.axvspan(fin_subida ,inicio_giro, facecolor='g', alpha=0.1)
+        ax1.axvspan(inicio_giro ,fin_giro, facecolor='m', alpha=0.1)
+        ax1.axvspan(fin_giro ,inicio_caida, facecolor='g', alpha=0.1) 
         ax1.axvspan(inicio_caida, fin_caida, facecolor='r', alpha=0.1)
         ax1.axvspan(fin_caida, self.vector_tiempos[self.frame_count-1], facecolor='b', alpha=0.1)
         
@@ -277,8 +298,8 @@ class TUG(TestBase):
         ax1.set_xlabel("Tiempo [s]")
         ax1.set_ylabel("Porcentaje del frame [%]")
         ax1.set_title("Posición de la cadera en el video")
-        #ax1.legend(['Desplazamiento horizontal de cadera en video','Altura de cadera en video'])
-        #ax1.legend(['Distancia horizontal', 'Altura cadera']) #Inicio subida', 'Fin subida'
+        ax1.legend(['Desplazamiento horizontal de cadera en video','Altura de cadera en video'])
+        ax1.legend(['Distancia horizontal', 'Altura cadera']) #Inicio subida', 'Fin subida'
         return figure
     
     def show_graphic(self):
@@ -290,7 +311,8 @@ class TUG(TestBase):
         navBar_canvas = NavigationToolbar2Tk(figure_canvas, graph_frame)
         navBar_canvas.pack(anchor="sw", fill='none',pady=1,padx=1)#,side='bottom',anchor="sw"
         figure_canvas.get_tk_widget().pack(side='bottom',anchor="sw", fill='none',padx=1)
-        figure_canvas.draw()
+        figure_canvas.draw_idle()
+        
         
     def step_detection_window(self,data, window_size):
         high = False

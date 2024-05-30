@@ -7,7 +7,7 @@ Created on Fri Feb 23 10:34:44 2024
 
 import tkinter as tk
 from tkinter import ttk
-from PIL import Image, ImageTk
+#from PIL import Image, ImageTk
 from tkinter import filedialog
 import threading
 
@@ -154,7 +154,8 @@ class MainScreen:
     def create_progressbar(self):
         progressbar = ttk.Progressbar(self.master, length=585, mode="indeterminate")
         progressbar.place(x=387, y=390)
-        progressbar.start(10)
+        progressbar.start(1000)
+        
         return progressbar
     
     def run(self):
