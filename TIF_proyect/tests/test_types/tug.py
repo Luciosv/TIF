@@ -396,7 +396,7 @@ class TUG(TestBase):
         time_down = round(fin_caida - inicio_caida, 2)
         
         time_all = time_up + time_walk_1 + time_walk_2 + time_turn + time_down
-        time_all = round(time_all)
+        time_all = round(time_all,2)
         
         return time_up, time_walk_1, time_turn, time_walk_2, time_down, time_all
 
